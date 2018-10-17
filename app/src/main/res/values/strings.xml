@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SeatFinder</string>
+    <string name="seat">Seat</string>
+    <string name="floor">Floor</string>
+    <string name="book">Book</string>
+    <string name="scan_default">Scan your seat</string>
+    <string name="done">Done!</string>
+</resources>
