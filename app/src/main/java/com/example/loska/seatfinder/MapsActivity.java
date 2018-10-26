@@ -3,9 +3,16 @@ package com.example.loska.seatfinder;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,25 +32,53 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.concurrent.LinkedTransferQueue;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener, ScanFragment.SeatScanListener {
 
     private GoogleMap mMap;
     private HashMap<String, Boolean> seatTaken;
+
+
+    BottomNavigationView navbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        navbar = (BottomNavigationView)findViewById(R.id.navbar);
+        navbar.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        Fragment selectedFragment = null;
+                        switch (menuItem.getItemId()) {
+                            case R.id.action_scan:
+                                selectedFragment = ScanFragment.newInstance();
+                                break;
+                            case R.id.action_find:
+                                SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+                                mapFragment.getMapAsync(MapsActivity.this);
+                                selectedFragment = mapFragment;
+                        }
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment, selectedFragment);
+                        transaction.commit();
+                        return true;
+                    }
+                }
+        );
 
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+        mapFragment.getMapAsync(MapsActivity.this);
+        transaction.replace(R.id.fragment, mapFragment);
+        transaction.commit();
         seatTaken = new HashMap<String, Boolean>();
     }
 
@@ -140,5 +175,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         coords.add(new LatLng(57.700565430587986, 11.980301141738892));
 
         return coords;
+    }
+
+    @Override
+    public void onBook(int seat) {
+        navbar.setSelectedItemId(R.id.action_find);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR,1);
+        DateFormat format = new DateFormat();
+        Toast.makeText(this, SeatFinderUtils.genSeatFloor(this, seat) +
+                        " booked until 1h from now, expires " + format.format("kk:mm", cal.getTime()),
+                Toast.LENGTH_LONG).show();
     }
 }
