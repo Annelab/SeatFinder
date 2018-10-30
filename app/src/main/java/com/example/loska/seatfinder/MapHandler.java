@@ -1,19 +1,8 @@
 package com.example.loska.seatfinder;
 
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.text.format.DateFormat;
-import android.view.MenuItem;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -21,54 +10,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleMap.OnMarkerClickListener, ScanFragment.SeatScanListener {
+public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private HashMap<String, Boolean> seatTaken;
 
-
-    BottomNavigationView navbar;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        final MapHandler mapHandler = new MapHandler();
-        navbar = (BottomNavigationView)findViewById(R.id.navbar);
-        navbar.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        Fragment selectedFragment = null;
-                        switch (menuItem.getItemId()) {
-                            case R.id.action_scan:
-                                selectedFragment = ScanFragment.newInstance();
-                                break;
-                            case R.id.action_find:
-                                SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-                                mapFragment.getMapAsync(mapHandler);
-                                selectedFragment = mapFragment;
-                        }
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragment, selectedFragment);
-                        transaction.commit();
-                        return true;
-                    }
-                }
-        );
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-        mapFragment.getMapAsync(mapHandler);
-        transaction.replace(R.id.fragment, mapFragment);
-        transaction.commit();
+    public MapHandler() {
         seatTaken = new HashMap<String, Boolean>();
     }
-
 
     /**
      * Manipulates the map once available.
@@ -104,9 +55,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //int width = 100;
 
         for (int i = 0; i < chairCoords.size(); i++){
-        //    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.chair_free);
-         //   Bitmap b=bitmapdraw.getBitmap();
-         //   Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+            //    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.chair_free);
+            //   Bitmap b=bitmapdraw.getBitmap();
+            //   Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
             String title = "chair" + i;
             MarkerOptions mo = new MarkerOptions()
@@ -152,16 +103,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         coords.add(new LatLng(57.700565430587986, 11.980301141738892));
 
         return coords;
-    }
-
-    @Override
-    public void onBook(int seat) {
-        navbar.setSelectedItemId(R.id.action_find);
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR,1);
-        DateFormat format = new DateFormat();
-        Toast.makeText(this, SeatFinderUtils.genSeatFloor(this, seat) +
-                        " booked until 1h from now, expires " + format.format("kk:mm", cal.getTime()),
-                Toast.LENGTH_LONG).show();
     }
 }
