@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
@@ -34,10 +33,9 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         setContentView(R.layout.activity_main);
 
         Toolbar appBar = (Toolbar)findViewById(R.id.appBar);
-        appBar.setLogo(getSizedLogo());
+        appBar.setLogo(getSizedLogo(R.drawable.stadsbiblioteket));
         setSupportActionBar(appBar);
 
-        final MapHandler mapHandler = new MapHandler();
         navbar = (BottomNavigationView)findViewById(R.id.navbar);
         navbar.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -49,9 +47,8 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
                                 selectedFragment = ScanFragment.newInstance();
                                 break;
                             case R.id.action_find:
-                                SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-                                mapFragment.getMapAsync(mapHandler);
-                                selectedFragment = mapFragment;
+                                selectedFragment = MapFragment.newInstance();
+                                break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragment, selectedFragment);
@@ -62,8 +59,7 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         );
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-        mapFragment.getMapAsync(mapHandler);
+        MapFragment mapFragment = MapFragment.newInstance();
         transaction.replace(R.id.fragment, mapFragment);
         transaction.commit();
     }
@@ -97,16 +93,32 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         getMenuInflater().inflate(R.menu.appbar, menu);
         return true;
     }
-    private Drawable getSizedLogo() {
-        Drawable logo = getResources().getDrawable(R.drawable.logo);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                onInfo();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private Drawable getSizedLogo(int rid) {
+        return getSizedLogo(rid, 50, 50);
+    }
+
+    public Drawable getSizedLogo(int rid, int width, int height) {
+        Drawable logo = getResources().getDrawable(rid);
         Bitmap bitmap = ((BitmapDrawable) logo).getBitmap();
         final float scale = getResources().getDisplayMetrics().density;
         Drawable sizedLogo = new BitmapDrawable(getResources(),
-                Bitmap.createScaledBitmap(bitmap, (int)(scale * 50), (int)(scale * 50), true));
+                Bitmap.createScaledBitmap(bitmap, (int)(scale * width), (int)(scale * height), true));
         return sizedLogo;
     }
 
-    public void onInfo(View view) {
+    public void onInfo() {
         Toast.makeText(this, "info", Toast.LENGTH_LONG).show();
     }
 }
