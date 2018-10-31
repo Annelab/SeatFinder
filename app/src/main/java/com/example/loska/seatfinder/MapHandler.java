@@ -116,7 +116,6 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
                 .position(coords)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                 .title(title);
-        //.icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
         seatTaken.put(title, false);
         return mo;
     }
@@ -169,8 +168,18 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
             //   Bitmap b=bitmapdraw.getBitmap();
             //   Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
-            mMap.addMarker(chairs.get(i));
-            seatTaken.put(chairs.get(i).getTitle(), false);
+            Marker marker = mMap.addMarker(chairs.get(i));
+            if (seatTaken.get(marker.getTitle())) {
+                marker.setIcon(
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+                );
+            }
+            else {
+                marker.setIcon(
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                );
+            }
+
         }
         mMap.setOnMarkerClickListener(this);
     }
