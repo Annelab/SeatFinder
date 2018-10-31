@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         setContentView(R.layout.activity_main);
 
         Toolbar appBar = (Toolbar)findViewById(R.id.appBar);
-        appBar.setLogo(getSizedLogo());
+        appBar.setLogo(getSizedLogo(R.drawable.stadsbiblioteket));
         setSupportActionBar(appBar);
 
         final MapHandler mapHandler = new MapHandler();
@@ -108,12 +108,16 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         }
     }
 
-    private Drawable getSizedLogo() {
-        Drawable logo = getResources().getDrawable(R.drawable.stadsbiblioteket);
+    private Drawable getSizedLogo(int rid) {
+        return getSizedLogo(rid, 50, 50);
+    }
+
+    private Drawable getSizedLogo(int rid, int width, int height) {
+        Drawable logo = getResources().getDrawable(rid);
         Bitmap bitmap = ((BitmapDrawable) logo).getBitmap();
         final float scale = getResources().getDisplayMetrics().density;
         Drawable sizedLogo = new BitmapDrawable(getResources(),
-                Bitmap.createScaledBitmap(bitmap, (int)(scale * 50), (int)(scale * 50), true));
+                Bitmap.createScaledBitmap(bitmap, (int)(scale * width), (int)(scale * height), true));
         return sizedLogo;
     }
 
