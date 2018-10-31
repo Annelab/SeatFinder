@@ -16,9 +16,11 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 
     private GoogleMap mMap;
     private HashMap<String, Boolean> seatTaken;
+    private int rid;
 
-    public MapHandler() {
+    public MapHandler(int id) {
         seatTaken = new HashMap<String, Boolean>();
+        this.rid = id;
     }
 
     /**
@@ -44,7 +46,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         // Place floor plan overlay on the map (orientation + position are not accurate, but
         // that is good enough, since we don't actually display a map.
         GroundOverlayOptions floorMap1 = new GroundOverlayOptions()
-                .image(BitmapDescriptorFactory.fromResource(R.drawable.floorplan_e))
+                .image(BitmapDescriptorFactory.fromResource(rid))
                 .anchor(0, 1)
                 .position(library, 500, 500);
         mMap.addGroundOverlay(floorMap1);

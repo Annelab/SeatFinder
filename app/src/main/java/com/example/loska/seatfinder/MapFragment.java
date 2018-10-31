@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.maps.SupportMapFragment;
 
@@ -22,7 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,6 +33,13 @@ public class MapFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Button btnFloor1;
+    private Button btnFloor2;
+    private Button btnFloor3;
+    private Button btnFloor4;
+
+    private ImageButton filterBtn;
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,7 +70,7 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        final MapHandler mapHandler = new MapHandler();
+        final MapHandler mapHandler = new MapHandler(R.drawable.floorplan_e);
 
         SupportMapFragment mMapFragment = new SupportMapFragment();
         mMapFragment.getMapAsync(mapHandler);
@@ -72,6 +81,17 @@ public class MapFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        btnFloor1 = view.findViewById(R.id.floor0);
+        btnFloor1.setOnClickListener(this);
+        btnFloor2 = view.findViewById(R.id.floor1);
+        btnFloor2.setOnClickListener(this);
+        btnFloor3 = view.findViewById(R.id.floor2);
+        btnFloor3.setOnClickListener(this);
+        btnFloor4 = view.findViewById(R.id.floor3);
+        btnFloor4.setOnClickListener(this);
+
+        filterBtn = view.findViewById(R.id.filterButton);
+        filterBtn.setOnClickListener(this);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -96,6 +116,26 @@ public class MapFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.floor0:
+                break;
+
+            case R.id.floor1:
+                break;
+
+            case R.id.floor2:
+                break;
+
+            case R.id.floor3:
+                break;
+
+            case R.id.filterButton:
+                break;
+        }
     }
 
     /**
