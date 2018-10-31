@@ -10,6 +10,15 @@
 
     <string name="floors">Floors</string>
 
+    <string-array name="seats">
+        <item>Type of seat</item>
+        <item>Any</item>
+        <item>Solo reading place</item>
+        <item>Computer room</item>
+        <item>Coffee</item>
+        <item>Group room</item>
+    </string-array>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

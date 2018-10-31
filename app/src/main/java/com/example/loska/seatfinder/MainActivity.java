@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.SupportMapFragment;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements ScanFragment.SeatScanListener {
+public class MainActivity extends AppCompatActivity implements ScanFragment.SeatScanListener,FilterFragment.OnFilterListener {
 
     BottomNavigationView navbar;
 
@@ -125,5 +125,13 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
 
     public void onInfo() {
         Toast.makeText(this, "info", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFilter() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        MapFragment mapFragment = MapFragment.newInstance();
+        transaction.replace(R.id.fragment, mapFragment);
+        transaction.commit();
     }
 }
