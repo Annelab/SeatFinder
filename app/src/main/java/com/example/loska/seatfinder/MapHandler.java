@@ -27,10 +27,12 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
     private int rid;
     private Floor currentFloor = Floor.FLOOR_E;
 
-    private HashMap<String, MarkerOptions> seatsFloorMinusOne;
-    private HashMap<String, MarkerOptions> seatsFloorE;
-    private HashMap<String, MarkerOptions> seatsFloorOne;
-    private HashMap<String, MarkerOptions> seatsFloorTwo;
+    private HashMap<String, MarkerOptions> moFloorMinusOne;
+    private HashMap<String, MarkerOptions> moFloorE;
+    private HashMap<String, MarkerOptions> moFloorOne;
+    private HashMap<String, MarkerOptions> moFloorTwo;
+
+    private boolean FLAG_loadSeats = false;
 
     private static MapHandler mapHandler;
 
@@ -54,10 +56,12 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         seatTakenFloorTwo = new HashMap<String, Boolean>();
         this.rid = id;
 
-        seatsFloorMinusOne = new HashMap<String, MarkerOptions>();
-        seatsFloorE = new HashMap<String, MarkerOptions>();
-        seatsFloorOne = new HashMap<String, MarkerOptions>();
-        seatsFloorTwo = new HashMap<String, MarkerOptions>();
+        moFloorMinusOne = new HashMap<String, MarkerOptions>();
+        moFloorE = new HashMap<String, MarkerOptions>();
+        moFloorOne = new HashMap<String, MarkerOptions>();
+        moFloorTwo = new HashMap<String, MarkerOptions>();
+
+        FLAG_loadSeats = true;
     }
 
     /**
@@ -73,7 +77,10 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        loadSeats();
+        if (FLAG_loadSeats) {
+            loadSeats();
+            FLAG_loadSeats = false;
+        }
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
         refreshMap();
@@ -91,23 +98,23 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         ArrayList<MarkerOptions> markers = new ArrayList<>();
 
         if (floor == Floor.FLOOR_E) {
-            for (String seat : seatsFloorE.keySet()) {
-                markers.add(seatsFloorE.get(seat));
+            for (String seat : moFloorE.keySet()) {
+                markers.add(moFloorE.get(seat));
             }
         }
         else if (floor == Floor.FLOOR_MINUS_ONE) {
-            for (String seat : seatsFloorMinusOne.keySet()) {
-                markers.add(seatsFloorMinusOne.get(seat));
+            for (String seat : moFloorMinusOne.keySet()) {
+                markers.add(moFloorMinusOne.get(seat));
             }
         }
         else if (floor == Floor.FLOOR_ONE) {
-            for (String seat : seatsFloorOne.keySet()) {
-                markers.add(seatsFloorOne.get(seat));
+            for (String seat : moFloorOne.keySet()) {
+                markers.add(moFloorOne.get(seat));
             }
         }
         else {
-            for (String seat : seatsFloorTwo.keySet()) {
-                markers.add(seatsFloorTwo.get(seat));
+            for (String seat : moFloorTwo.keySet()) {
+                markers.add(moFloorTwo.get(seat));
             }
         }
 
@@ -115,12 +122,12 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
     }
 
     private void loadSeats() {
-        seatsFloorE.put("1", createMarkerOptions(new LatLng(57.699883568653654, 11.981836706399918),"1"));
-        seatsFloorE.put("2", createMarkerOptions(new LatLng(57.69963024095474, 11.981253661215305), "2"));
-        seatsFloorE.put("3", createMarkerOptions(new LatLng(57.69946272838439, 11.981538645923136), "3"));
-        seatsFloorE.put("4", createMarkerOptions(new LatLng(57.69970459120565, 11.982051953673363), "4"));
-        seatsFloorE.put("5", createMarkerOptions(new LatLng(57.700887545870884, 11.98092643171549), "5"));
-        seatsFloorE.put("6", createMarkerOptions(new LatLng(57.700565430587986, 11.980301141738892), "6"));
+        moFloorE.put("1", createMarkerOptions(new LatLng(57.699883568653654, 11.981836706399918),"1"));
+        moFloorE.put("2", createMarkerOptions(new LatLng(57.69963024095474, 11.981253661215305), "2"));
+        moFloorE.put("3", createMarkerOptions(new LatLng(57.69946272838439, 11.981538645923136), "3"));
+        moFloorE.put("4", createMarkerOptions(new LatLng(57.69970459120565, 11.982051953673363), "4"));
+        moFloorE.put("5", createMarkerOptions(new LatLng(57.700887545870884, 11.98092643171549), "5"));
+        moFloorE.put("6", createMarkerOptions(new LatLng(57.700565430587986, 11.980301141738892), "6"));
         seatTakenFloorE.put("1", false);
         seatTakenFloorE.put("2", false);
         seatTakenFloorE.put("3", false);
@@ -128,12 +135,12 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         seatTakenFloorE.put("5", false);
         seatTakenFloorE.put("6", false);
 
-        seatsFloorOne.put("34", createMarkerOptions(new LatLng(57.99863568657654, 11.981856706399918),"34"));
-        seatsFloorOne.put("35", createMarkerOptions(new LatLng(57.69964024095574, 11.981257361215305), "35"));
-        seatsFloorOne.put("36", createMarkerOptions(new LatLng(57.69945272838139, 11.981536545923136), "36"));
-        seatsFloorOne.put("37", createMarkerOptions(new LatLng(57.7002459120765, 11.982050963673363), "37"));
-        seatsFloorOne.put("38", createMarkerOptions(new LatLng(57.700897545870484, 11.98094642171549), "38"));
-        seatsFloorOne.put("39", createMarkerOptions(new LatLng(57.700575430587916, 11.980321141737892), "39"));
+        moFloorOne.put("34", createMarkerOptions(new LatLng(57.99863568657654, 11.981856706399918),"34"));
+        moFloorOne.put("35", createMarkerOptions(new LatLng(57.69964024095574, 11.981257361215305), "35"));
+        moFloorOne.put("36", createMarkerOptions(new LatLng(57.69945272838139, 11.981536545923136), "36"));
+        moFloorOne.put("37", createMarkerOptions(new LatLng(57.7002459120765, 11.982050963673363), "37"));
+        moFloorOne.put("38", createMarkerOptions(new LatLng(57.700897545870484, 11.98094642171549), "38"));
+        moFloorOne.put("39", createMarkerOptions(new LatLng(57.700575430587916, 11.980321141737892), "39"));
         seatTakenFloorOne.put("34", false);
         seatTakenFloorOne.put("35", false);
         seatTakenFloorOne.put("36", false);
@@ -141,12 +148,12 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         seatTakenFloorOne.put("38", false);
         seatTakenFloorOne.put("39", false);
 
-        seatsFloorTwo.put("45", createMarkerOptions(new LatLng(57.699870669407694, 11.983653903007507),"45"));
-        seatsFloorTwo.put("46", createMarkerOptions(new LatLng(57.699859203407414, 11.984754614531994), "46"));
-        seatsFloorTwo.put("47", createMarkerOptions(new LatLng(57.700577254670165, 11.984697282314302), "47"));
-        seatsFloorTwo.put("50", createMarkerOptions(new LatLng(57.70058119603001, 11.983718276023865), "50"));
-        seatsFloorTwo.put("51", createMarkerOptions(new LatLng(57.70150937433458, 11.984190009534359), "51"));
-        seatsFloorTwo.put("52", createMarkerOptions(new LatLng(57.701467274501816, 11.982674896717072), "52"));
+        moFloorTwo.put("45", createMarkerOptions(new LatLng(57.699870669407694, 11.983653903007507),"45"));
+        moFloorTwo.put("46", createMarkerOptions(new LatLng(57.699859203407414, 11.984754614531994), "46"));
+        moFloorTwo.put("47", createMarkerOptions(new LatLng(57.700577254670165, 11.984697282314302), "47"));
+        moFloorTwo.put("50", createMarkerOptions(new LatLng(57.70058119603001, 11.983718276023865), "50"));
+        moFloorTwo.put("51", createMarkerOptions(new LatLng(57.70150937433458, 11.984190009534359), "51"));
+        moFloorTwo.put("52", createMarkerOptions(new LatLng(57.701467274501816, 11.982674896717072), "52"));
         seatTakenFloorTwo.put("45", false);
         seatTakenFloorTwo.put("46", false);
         seatTakenFloorTwo.put("47", false);
@@ -199,22 +206,29 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         for (int i = 0; i < chairs.size(); i++){
             Marker marker = mMap.addMarker(chairs.get(i));
             HashMap<String, Boolean> seatTaken;
-            if (currentFloor == Floor.FLOOR_E)
+            if (currentFloor == Floor.FLOOR_E) {
                 seatTaken = seatTakenFloorE;
-            else if (currentFloor == Floor.FLOOR_MINUS_ONE)
+            }
+            else if (currentFloor == Floor.FLOOR_MINUS_ONE) {
                 seatTaken = seatTakenFloorMinusOne;
+            }
             else if (currentFloor == Floor.FLOOR_ONE)
                 seatTaken = seatTakenFloorOne;
             else
                 seatTaken = seatTakenFloorTwo;
+
+            Log.d("DebugLog","seat 46 taken? -> " + seatTaken.get("46"));
+            Log.d("DebugLog", "seat: " + marker.getTitle());
+            Log.d("DebugLog","seat really taken? -> " + seatTaken.get(marker.getTitle()));
+
             if (seatTaken.get(marker.getTitle())) {
                 marker.setIcon(
-                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
                 );
             }
             else {
                 marker.setIcon(
-                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
                 );
 
             }
@@ -224,6 +238,19 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
     }
 
     public void bookSeat(int seat, int floor) {
+        MarkerOptions marker = null;
+        if (floor == 0) {
+            seatTakenFloorE.put("" + seat, true);
+            changeFloor(Floor.FLOOR_E);
+        }
+        else if (floor == 1) {
+            seatTakenFloorOne.put("" + seat, true);
+            changeFloor(Floor.FLOOR_ONE);
+        }
+        else if (floor == 2) {
+            seatTakenFloorTwo.put("" + seat, true);
+            changeFloor(Floor.FLOOR_TWO);
+        }
 
     }
 
