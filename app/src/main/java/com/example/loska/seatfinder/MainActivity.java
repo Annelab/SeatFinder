@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         Toolbar appBar = (Toolbar)findViewById(R.id.appBar);
         setSupportActionBar(appBar);
 
-        final MapHandler mapHandler = new MapHandler();
         navbar = (BottomNavigationView)findViewById(R.id.navbar);
         navbar.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -45,9 +44,8 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
                                 selectedFragment = ScanFragment.newInstance();
                                 break;
                             case R.id.action_find:
-                                SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-                                mapFragment.getMapAsync(mapHandler);
-                                selectedFragment = mapFragment;
+                                selectedFragment = MapFragment.newInstance();
+                                break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragment, selectedFragment);
@@ -58,8 +56,7 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         );
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-        mapFragment.getMapAsync(mapHandler);
+        MapFragment mapFragment = MapFragment.newInstance();
         transaction.replace(R.id.fragment, mapFragment);
         transaction.commit();
     }
