@@ -2,6 +2,9 @@ package com.example.loska.seatfinder;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         setContentView(R.layout.activity_main);
 
         Toolbar appBar = (Toolbar)findViewById(R.id.appBar);
+        appBar.setLogo(getSizedLogo());
         setSupportActionBar(appBar);
 
         final MapHandler mapHandler = new MapHandler();
@@ -92,6 +96,14 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.appbar, menu);
         return true;
+    }
+    private Drawable getSizedLogo() {
+        Drawable logo = getResources().getDrawable(R.drawable.logo);
+        Bitmap bitmap = ((BitmapDrawable) logo).getBitmap();
+        final float scale = getResources().getDisplayMetrics().density;
+        Drawable sizedLogo = new BitmapDrawable(getResources(),
+                Bitmap.createScaledBitmap(bitmap, (int)(scale * 50), (int)(scale * 50), true));
+        return sizedLogo;
     }
 
     public void onInfo(View view) {
