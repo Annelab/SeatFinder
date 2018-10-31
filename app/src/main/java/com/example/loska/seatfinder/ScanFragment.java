@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.Frame;
@@ -47,16 +48,7 @@ public class ScanFragment extends Fragment implements CameraBridgeViewBase.CvCam
     ImageView imView;
     Button book;
     TextView tv;
-
-    private void requestCameraPermission() {
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.CAMERA},
-                    1);
-        }
-    }
+    LinearLayout bookingInfo;
 
     private SeatScanListener listener;
 
@@ -77,7 +69,6 @@ public class ScanFragment extends Fragment implements CameraBridgeViewBase.CvCam
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        requestCameraPermission();
         return inflater.inflate(R.layout.fragment_scan, container, false);
     }
 
@@ -88,6 +79,8 @@ public class ScanFragment extends Fragment implements CameraBridgeViewBase.CvCam
         book = (Button)getView().findViewById(R.id.book);
         book.setOnClickListener(this);
         tv = (TextView)getView().findViewById(R.id.tv);
+        bookingInfo = (LinearLayout)getView().findViewById(R.id.bookingInfo);
+
         imView = (ImageView)getView().findViewById(R.id.imView);
         cvView = (CameraBridgeViewBase)getView().findViewById(R.id.cvView);
         cvView.setCvCameraViewListener(this);
@@ -124,6 +117,8 @@ public class ScanFragment extends Fragment implements CameraBridgeViewBase.CvCam
                 seat = Integer.parseInt(text.substring(5));
             } catch(NumberFormatException e) {
                 seat = -1;
+            } catch(StringIndexOutOfBoundsException e) {
+                seat = -1;
             }
 
             final String finalText = SeatFinderUtils.genSeatFloor(getContext(), seat);
@@ -132,6 +127,7 @@ public class ScanFragment extends Fragment implements CameraBridgeViewBase.CvCam
                 public void run() {
                     tv.setText(finalText);
                     book.setEnabled(true);
+                    bookingInfo.setVisibility(View.VISIBLE);
                 }
             });
         }

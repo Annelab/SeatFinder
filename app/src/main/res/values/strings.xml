@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SeatFinder</string>
+    <string name="app_name">Stadsbiblioteket - SeatFinder</string>
     <string name="seat">Seat</string>
     <string name="floor">Floor</string>
     <string name="book">Book</string>

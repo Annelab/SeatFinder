@@ -303,7 +303,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
-            Intent myIntent = new Intent(LoginActivity.this, MapsActivity.class);
+            Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
             //myIntent.putExtra("key", value); //Optional parameters
             LoginActivity.this.startActivity(myIntent);
         }

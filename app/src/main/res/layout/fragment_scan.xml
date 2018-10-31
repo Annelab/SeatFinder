@@ -19,23 +19,34 @@
             android:id="@+id/imView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/tv"/>
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
+            android:cropToPadding="true"/>
+        <LinearLayout
+            android:id="@+id/bookingInfo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/book"
-            android:text="@string/scan_default"/>
-        <Button
-            android:id="@+id/book"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:textSize="20sp"
-            android:enabled="false"
-            android:text="@string/book"/>
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textSize="20sp"
+                android:text="@string/scan_default"/>
+            <Button
+                android:id="@+id/book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textSize="20sp"
+                android:background="@drawable/book_button"
+                android:enabled="false"
+                android:text="@string/book"/>
+
+        </LinearLayout>
     </RelativeLayout>
 
 </FrameLayout>
