@@ -81,21 +81,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-/*
-        // flip taken/not taken
-        if (seatTaken.get(marker.getTitle())) {
-            seatTaken.put(marker.getTitle(), false);
-            marker.setIcon(
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
-            );
-        }
-        else {
-            seatTaken.put(marker.getTitle(), true);
-            marker.setIcon(
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
-            );
-        }
-        */
+
         return true;
     }
 
@@ -191,8 +177,10 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 
         // Move camera to the library
         LatLng library = new LatLng(57.697844,11.9775544);
-        float zoomLevel = 16.0f; //This goes up to 21
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(library, zoomLevel));
+        float zoomLevel = 15.77f;
+        LatLng cameraPos = new LatLng(57.7006729221021,11.9818876683712);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPos, zoomLevel));
 
         // Place floor plan overlay on the map (orientation + position are not accurate, but
         // that is good enough, since we don't actually display a map.
@@ -205,18 +193,10 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
                 .position(library, 500, 500);
         mMap.addGroundOverlay(floorMap1);
 
-        // add only the ones of the current floor
-
         // Get chair coordinates
         ArrayList<MarkerOptions> chairs = getChairs(currentFloor);
-        //int height = 100;
-        //int width = 100;
 
         for (int i = 0; i < chairs.size(); i++){
-            //    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.chair_free);
-            //   Bitmap b=bitmapdraw.getBitmap();
-            //   Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-
             Marker marker = mMap.addMarker(chairs.get(i));
             HashMap<String, Boolean> seatTaken;
             if (currentFloor == Floor.FLOOR_E)
