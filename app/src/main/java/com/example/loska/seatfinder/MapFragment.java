@@ -148,6 +148,8 @@ public class MapFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.filterButton:
+                FilterFragment filter = FilterFragment.newInstance();
+                getChildFragmentManager().beginTransaction().replace(R.id.mapWrapper, filter).commit();
                 break;
         }
     }
@@ -165,5 +167,9 @@ public class MapFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void onFilter(){
+
     }
 }
