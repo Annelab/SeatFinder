@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         return getSizedLogo(rid, 50, 50);
     }
 
-    private Drawable getSizedLogo(int rid, int width, int height) {
+    public Drawable getSizedLogo(int rid, int width, int height) {
         Drawable logo = getResources().getDrawable(rid);
         Bitmap bitmap = ((BitmapDrawable) logo).getBitmap();
         final float scale = getResources().getDisplayMetrics().density;
