@@ -2,6 +2,9 @@ package com.example.loska.seatfinder;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -14,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         setContentView(R.layout.activity_main);
 
         Toolbar appBar = (Toolbar)findViewById(R.id.appBar);
+        appBar.setLogo(getSizedLogo());
         setSupportActionBar(appBar);
 
         navbar = (BottomNavigationView)findViewById(R.id.navbar);
@@ -90,8 +93,28 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         getMenuInflater().inflate(R.menu.appbar, menu);
         return true;
     }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                onInfo();
+                return true;
 
-    public void onInfo(View view) {
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private Drawable getSizedLogo() {
+        Drawable logo = getResources().getDrawable(R.drawable.stadsbiblioteket);
+        Bitmap bitmap = ((BitmapDrawable) logo).getBitmap();
+        final float scale = getResources().getDisplayMetrics().density;
+        Drawable sizedLogo = new BitmapDrawable(getResources(),
+                Bitmap.createScaledBitmap(bitmap, (int)(scale * 50), (int)(scale * 50), true));
+        return sizedLogo;
+    }
+
+    public void onInfo() {
         Toast.makeText(this, "info", Toast.LENGTH_LONG).show();
     }
 }

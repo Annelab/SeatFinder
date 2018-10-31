@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -49,6 +52,8 @@ public class ScanFragment extends Fragment implements CameraBridgeViewBase.CvCam
     Button book;
     TextView tv;
     LinearLayout bookingInfo;
+
+    boolean vibratedForCurrentQR;
 
     private SeatScanListener listener;
 
@@ -130,6 +135,22 @@ public class ScanFragment extends Fragment implements CameraBridgeViewBase.CvCam
                     bookingInfo.setVisibility(View.VISIBLE);
                 }
             });
+
+            if (!vibratedForCurrentQR) {
+                /* Let user know with a vibration that the QR code was read */
+                Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                // Vibrate for 500 milliseconds
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    v.vibrate(500);
+                }
+                vibratedForCurrentQR = true;
+            }
+        }
+
+        else {
+            vibratedForCurrentQR = false;
         }
         getActivity().runOnUiThread(new Runnable() {
             @Override
