@@ -10,6 +10,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/floorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/floors"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+            <Button
+                android:id="@+id/floor0"
+                android:layout_below="@id/floorText"
+                android:layout_width="80px"
+                android:layout_height="wrap_content"
+                android:text="-1"
+                android:background="@color/colorPrimary"/>
+            <Button
+                android:id="@+id/floor1"
+                android:layout_marginLeft="10px"
+                android:layout_below="@id/floorText"
+                android:layout_toRightOf="@id/floor0"
+                android:layout_width="80px"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:background="@color/colorPrimary"/>
+            <Button
+                android:id="@+id/floor2"
+                android:layout_marginLeft="10px"
+                android:layout_below="@id/floorText"
+                android:layout_toRightOf="@id/floor1"
+                android:layout_width="80px"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:background="@color/colorPrimary"/>
+            <Button
+                android:id="@+id/floor3"
+                android:layout_marginLeft="10px"
+                android:layout_below="@id/floorText"
+                android:layout_toRightOf="@id/floor2"
+                android:layout_width="80px"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:background="@color/colorPrimary"/>
+
+
+        </RelativeLayout>
+
         <ImageButton
             android:contentDescription="filter button"
             android:layout_alignParentRight="true"
