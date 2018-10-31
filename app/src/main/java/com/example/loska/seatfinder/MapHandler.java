@@ -9,18 +9,40 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private HashMap<String, Boolean> seatTaken;
     private int rid;
+    private Floor currentFloor = Floor.FLOOR_E;
+
+    private HashMap<String, MarkerOptions> seatsFloorMinusOne;
+    private HashMap<String, MarkerOptions> seatsFloorE;
+    private HashMap<String, MarkerOptions> seatsFloorOne;
+    private HashMap<String, MarkerOptions> seatsFloorTwo;
+
+    private enum Floor {
+        FLOOR_MINUS_ONE,
+        FLOOR_E,
+        FLOOR_ONE,
+        FLOOR_TWO
+    }
+
 
     public MapHandler(int id) {
         seatTaken = new HashMap<String, Boolean>();
         this.rid = id;
+
+        seatsFloorMinusOne = new HashMap<String, MarkerOptions>();
+        seatsFloorE = new HashMap<String, MarkerOptions>();
+        seatsFloorOne = new HashMap<String, MarkerOptions>();
+        seatsFloorTwo = new HashMap<String, MarkerOptions>();
     }
 
     /**
@@ -35,6 +57,8 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        loadSeats();
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
 
@@ -52,23 +76,17 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         mMap.addGroundOverlay(floorMap1);
 
         // Get chair coordinates
-        ArrayList<LatLng> chairCoords = getChairCoords();
+        ArrayList<MarkerOptions> chairs = getChairs(currentFloor);
         //int height = 100;
         //int width = 100;
 
-        for (int i = 0; i < chairCoords.size(); i++){
+        for (int i = 0; i < chairs.size(); i++){
             //    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.chair_free);
             //   Bitmap b=bitmapdraw.getBitmap();
             //   Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
-            String title = "chair" + i;
-            MarkerOptions mo = new MarkerOptions()
-                    .position(chairCoords.get(i))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                    .title(title);
-            //.icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
-            mMap.addMarker(mo);
-            seatTaken.put(title, false);
+            mMap.addMarker(chairs.get(i));
+            seatTaken.put(chairs.get(i).getTitle(), false);
         }
         googleMap.setOnMarkerClickListener(this);
     }
@@ -93,17 +111,44 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         return true;
     }
 
-    private ArrayList<LatLng> getChairCoords() {
+    private ArrayList<MarkerOptions> getChairs(Floor floor) {
         // Might eventually want to read the coordinates from an XML
 
-        ArrayList<LatLng> coords = new ArrayList<LatLng>();
-        coords.add(new LatLng(57.699883568653654, 11.981836706399918));
-        coords.add(new LatLng(57.69963024095474, 11.981253661215305));
-        coords.add(new LatLng(57.69946272838439, 11.981538645923136));
-        coords.add(new LatLng(57.69970459120565, 11.982051953673363));
-        coords.add(new LatLng(57.700887545870884, 11.98092643171549));
-        coords.add(new LatLng(57.700565430587986, 11.980301141738892));
+        ArrayList<MarkerOptions> markers = new ArrayList<>();
 
-        return coords;
+        if (floor == Floor.FLOOR_E) {
+            for (String seat : seatsFloorE.keySet()) {
+                markers.add(seatsFloorE.get(seat));
+            }
+
+        }
+
+        return markers;
+    }
+
+    private void loadSeats() {
+        seatsFloorE.put("Seat1", createMarkerOptions(new LatLng(57.699883568653654, 11.981836706399918),"Seat1"));
+        seatsFloorE.put("Seat2", createMarkerOptions(new LatLng(57.69963024095474, 11.981253661215305), "Seat2"));
+        seatsFloorE.put("Seat3", createMarkerOptions(new LatLng(57.69946272838439, 11.981538645923136), "Seat3"));
+        seatsFloorE.put("Seat4", createMarkerOptions(new LatLng(57.69970459120565, 11.982051953673363), "Seat4"));
+        seatsFloorE.put("Seat5", createMarkerOptions(new LatLng(57.700887545870884, 11.98092643171549), "Seat5"));
+        seatsFloorE.put("Seat6", createMarkerOptions(new LatLng(57.700565430587986, 11.980301141738892), "Seat6"));
+
+
+        // on floor 2: need seat 45, 46 and 52
+    }
+
+    private MarkerOptions createMarkerOptions (LatLng coords, String title) {
+        MarkerOptions mo = new MarkerOptions()
+                .position(coords)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                .title(title);
+        //.icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+        seatTaken.put(title, false);
+        return mo;
+    }
+
+    public Floor getCurrentFloor() {
+        return currentFloor;
     }
 }
