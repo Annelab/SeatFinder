@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
@@ -97,8 +96,20 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         getMenuInflater().inflate(R.menu.appbar, menu);
         return true;
     }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                onInfo();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     private Drawable getSizedLogo() {
-        Drawable logo = getResources().getDrawable(R.drawable.logo);
+        Drawable logo = getResources().getDrawable(R.drawable.stadsbiblioteket);
         Bitmap bitmap = ((BitmapDrawable) logo).getBitmap();
         final float scale = getResources().getDisplayMetrics().density;
         Drawable sizedLogo = new BitmapDrawable(getResources(),
@@ -106,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         return sizedLogo;
     }
 
-    public void onInfo(View view) {
+    public void onInfo() {
         Toast.makeText(this, "info", Toast.LENGTH_LONG).show();
     }
 }
