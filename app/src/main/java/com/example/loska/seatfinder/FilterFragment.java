@@ -3,6 +3,8 @@ package com.example.loska.seatfinder;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +14,12 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FilterFragment.OnFragmentInteractionListener} interface
+ * {@link FilterFragment.OnFilterListener} interface
  * to handle interaction events.
  * Use the {@link FilterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FilterFragment extends Fragment {
+public class FilterFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,6 +56,12 @@ public class FilterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_filter, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.submitBtn).setOnClickListener(this);
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -64,18 +72,23 @@ public class FilterFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*if (context instanceof OnFilterListener) {
+        if (context instanceof OnFilterListener) {
             mListener = (OnFilterListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        mListener.onFilter();
     }
 
     /**

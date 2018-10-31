@@ -24,7 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements View.OnClickListener {
+public class MapFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -77,7 +77,7 @@ public class MapFragment extends Fragment implements View.OnClickListener {
 
         SupportMapFragment mMapFragment = new SupportMapFragment();
         mMapFragment.getMapAsync(mapHandler);
-        getChildFragmentManager().beginTransaction().add(R.id.mapWrapper, mMapFragment).commit();
+        getChildFragmentManager().beginTransaction().add(R.id.mapWrapper, mMapFragment).addToBackStack(null).commit();
         return v;
     }
 
@@ -142,7 +142,7 @@ public class MapFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.filterButton:
                 FilterFragment filter = FilterFragment.newInstance();
-                getChildFragmentManager().beginTransaction().replace(R.id.mapWrapper, filter).commit();
+                getChildFragmentManager().beginTransaction().add(R.id.mapWrapper, filter).commit();
                 break;
         }
     }
@@ -160,9 +160,5 @@ public class MapFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public void onFilter(){
-
     }
 }
