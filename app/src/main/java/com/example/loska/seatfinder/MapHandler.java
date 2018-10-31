@@ -27,7 +27,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
     private HashMap<String, MarkerOptions> seatsFloorOne;
     private HashMap<String, MarkerOptions> seatsFloorTwo;
 
-    private enum Floor {
+    public enum Floor {
         FLOOR_MINUS_ONE,
         FLOOR_E,
         FLOOR_ONE,
@@ -61,34 +61,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         loadSeats();
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-
-        // Move camera to the library
-        LatLng library = new LatLng(57.697844,11.9775544);
-        float zoomLevel = 16.0f; //This goes up to 21
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(library, zoomLevel));
-
-        // Place floor plan overlay on the map (orientation + position are not accurate, but
-        // that is good enough, since we don't actually display a map.
-        GroundOverlayOptions floorMap1 = new GroundOverlayOptions()
-                .image(BitmapDescriptorFactory.fromResource(rid))
-                .anchor(0, 1)
-                .position(library, 500, 500);
-        mMap.addGroundOverlay(floorMap1);
-
-        // Get chair coordinates
-        ArrayList<MarkerOptions> chairs = getChairs(currentFloor);
-        //int height = 100;
-        //int width = 100;
-
-        for (int i = 0; i < chairs.size(); i++){
-            //    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.chair_free);
-            //   Bitmap b=bitmapdraw.getBitmap();
-            //   Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-
-            mMap.addMarker(chairs.get(i));
-            seatTaken.put(chairs.get(i).getTitle(), false);
-        }
-        googleMap.setOnMarkerClickListener(this);
+        refreshMap();
     }
 
     @Override
@@ -150,5 +123,55 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 
     public Floor getCurrentFloor() {
         return currentFloor;
+    }
+
+    public void changeFloor(Floor newFloor) {
+        currentFloor = newFloor;
+        refreshMap();
+    }
+
+    private void refreshMap() {
+        mMap.clear();
+
+        // Move camera to the library
+        LatLng library = new LatLng(57.697844,11.9775544);
+        float zoomLevel = 16.0f; //This goes up to 21
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(library, zoomLevel));
+
+        // Place floor plan overlay on the map (orientation + position are not accurate, but
+        // that is good enough, since we don't actually display a map.
+
+        int floorPlanId;
+        if (currentFloor == Floor.FLOOR_MINUS_ONE)
+            floorPlanId = R.drawable.floor_minus_one;
+        else if (currentFloor == Floor.FLOOR_E)
+            floorPlanId = R.drawable.floor_e;
+        else if (currentFloor == Floor.FLOOR_ONE)
+            floorPlanId = R.drawable.floor_1;
+        else
+            floorPlanId = R.drawable.floor_2;
+
+        GroundOverlayOptions floorMap1 = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(floorPlanId))
+                .anchor(0, 1)
+                .position(library, 500, 500);
+        mMap.addGroundOverlay(floorMap1);
+
+        // add only the ones of the current floor
+
+        // Get chair coordinates
+        ArrayList<MarkerOptions> chairs = getChairs(currentFloor);
+        //int height = 100;
+        //int width = 100;
+
+        for (int i = 0; i < chairs.size(); i++){
+            //    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.chair_free);
+            //   Bitmap b=bitmapdraw.getBitmap();
+            //   Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+
+            mMap.addMarker(chairs.get(i));
+            seatTaken.put(chairs.get(i).getTitle(), false);
+        }
+        mMap.setOnMarkerClickListener(this);
     }
 }

@@ -41,6 +41,8 @@ public class MapFragment extends Fragment implements View.OnClickListener {
 
     private ImageButton filterBtn;
 
+    private MapHandler mapHandler;
+
     private OnFragmentInteractionListener mListener;
 
     public MapFragment() {
@@ -70,7 +72,7 @@ public class MapFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        final MapHandler mapHandler = new MapHandler(R.drawable.floorplan_e);
+        mapHandler = new MapHandler(R.drawable.floorplan_e);
 
         SupportMapFragment mMapFragment = new SupportMapFragment();
         mMapFragment.getMapAsync(mapHandler);
@@ -122,15 +124,19 @@ public class MapFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.floor0:
+                mapHandler.changeFloor(MapHandler.Floor.FLOOR_MINUS_ONE);
                 break;
 
             case R.id.floor1:
+                mapHandler.changeFloor(MapHandler.Floor.FLOOR_E);
                 break;
 
             case R.id.floor2:
+                mapHandler.changeFloor(MapHandler.Floor.FLOOR_ONE);
                 break;
 
             case R.id.floor3:
+                mapHandler.changeFloor(MapHandler.Floor.FLOOR_TWO);
                 break;
 
             case R.id.filterButton:
