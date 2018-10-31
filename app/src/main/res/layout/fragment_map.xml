@@ -8,7 +8,8 @@
     <RelativeLayout
         android:id = "@+id/filterBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="10px">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -65,11 +66,12 @@
             android:id="@+id/filterButton"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_width="150px"
-            android:layout_height="150px"
+            android:layout_width="130px"
+            android:layout_height="130px"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src = "@drawable/filter_lighter"/>
+            android:src = "@drawable/filter_lighter"
+            android:background="@color/white"/>
     </RelativeLayout>
 
     <FrameLayout

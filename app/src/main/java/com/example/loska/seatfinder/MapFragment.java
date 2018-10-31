@@ -70,7 +70,7 @@ public class MapFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        final MapHandler mapHandler = new MapHandler(R.drawable.floorplan_e);
+        final MapHandler mapHandler = new MapHandler(R.drawable.floor_e);
 
         SupportMapFragment mMapFragment = new SupportMapFragment();
         mMapFragment.getMapAsync(mapHandler);
@@ -120,17 +120,31 @@ public class MapFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        MapHandler mapHandler;
+        SupportMapFragment mMapFragment = new SupportMapFragment();
         switch (v.getId()){
             case R.id.floor0:
+                mapHandler = new MapHandler(R.drawable.floor_minus_one);
+                mMapFragment.getMapAsync(mapHandler);
+                getChildFragmentManager().beginTransaction().add(R.id.mapWrapper, mMapFragment).commit();
                 break;
 
             case R.id.floor1:
+                mapHandler = new MapHandler(R.drawable.floor_e);
+                mMapFragment.getMapAsync(mapHandler);
+                getChildFragmentManager().beginTransaction().add(R.id.mapWrapper, mMapFragment).commit();
                 break;
 
             case R.id.floor2:
+                mapHandler = new MapHandler(R.drawable.floor_1);
+                mMapFragment.getMapAsync(mapHandler);
+                getChildFragmentManager().beginTransaction().add(R.id.mapWrapper, mMapFragment).commit();
                 break;
 
             case R.id.floor3:
+                mapHandler = new MapHandler(R.drawable.floor_2);
+                mMapFragment.getMapAsync(mapHandler);
+                getChildFragmentManager().beginTransaction().add(R.id.mapWrapper, mMapFragment).commit();
                 break;
 
             case R.id.filterButton:
