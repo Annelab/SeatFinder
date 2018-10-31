@@ -73,7 +73,7 @@ public class MapFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mapHandler = new MapHandler(R.drawable.floorplan_e);
+        mapHandler = MapHandler.getMapHandler();
 
         SupportMapFragment mMapFragment = new SupportMapFragment();
         mMapFragment.getMapAsync(mapHandler);

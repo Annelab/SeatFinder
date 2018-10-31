@@ -7,4 +7,12 @@ public class SeatFinderUtils {
         return ctx.getString(R.string.seat) + " " + (seat%1000) + " " +
                 ctx.getString(R.string.floor) + " " + (seat/1000);
     }
+
+    public static int getFloor(Context ctx, int seat) {
+        return (seat/1000);
+    }
+
+    public static int getSeat(Context ctx, int seat) {
+        return (seat%1000);
+    }
 }

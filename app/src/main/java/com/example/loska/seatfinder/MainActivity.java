@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         Toast.makeText(this, SeatFinderUtils.genSeatFloor(this, seat) +
                         " booked until 1h from now, expires " + format.format("kk:mm", cal.getTime()),
                 Toast.LENGTH_LONG).show();
+
+        MapHandler.getMapHandler().bookSeat(
+                SeatFinderUtils.getSeat(this, seat),
+                SeatFinderUtils.getFloor(this, seat));
+
     }
 
 
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements ScanFragment.Seat
         Bitmap bitmap = ((BitmapDrawable) logo).getBitmap();
         final float scale = getResources().getDisplayMetrics().density;
         Drawable sizedLogo = new BitmapDrawable(getResources(),
-                Bitmap.createScaledBitmap(bitmap, (int)(scale * width), (int)(scale * height), true));
+                Bitmap.createScaledBitmap(bitmap, (int) (scale * width), (int) (scale * height), true));
         return sizedLogo;
     }
 
