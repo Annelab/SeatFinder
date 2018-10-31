@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -31,6 +32,10 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
     private HashMap<String, MarkerOptions> moFloorE;
     private HashMap<String, MarkerOptions> moFloorOne;
     private HashMap<String, MarkerOptions> moFloorTwo;
+
+    private LinkedList<String> bookedByUser;
+
+
 
     private boolean FLAG_loadSeats = false;
 
@@ -60,6 +65,8 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
         moFloorE = new HashMap<String, MarkerOptions>();
         moFloorOne = new HashMap<String, MarkerOptions>();
         moFloorTwo = new HashMap<String, MarkerOptions>();
+
+        bookedByUser = new LinkedList<>();
 
         FLAG_loadSeats = true;
     }
@@ -230,7 +237,13 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
                 marker.setIcon(
                         BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
                 );
+            }
 
+            if (bookedByUser.contains(marker.getTitle()))
+            {
+                marker.setIcon(
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
+                );
             }
 
         }
@@ -239,6 +252,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnMarkerClickLi
 
     public void bookSeat(int seat, int floor) {
         MarkerOptions marker = null;
+        bookedByUser.add("" + seat);
         if (floor == 0) {
             seatTakenFloorE.put("" + seat, true);
             changeFloor(Floor.FLOOR_E);
